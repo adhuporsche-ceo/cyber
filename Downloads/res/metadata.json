@@ -1,0 +1,8 @@
+{
+  "name": "Student Academic Personal and Career Profiling System",
+  "description": "Student Academic Personal and Career Profiling System for College Mentors & Faculty",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

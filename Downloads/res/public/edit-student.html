@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Student Profile | Student Profiling System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app-wrapper">
+    <main id="main-content">
+      <div class="page-container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div>
+            <h3 class="page-title" id="formPageTitle">Edit Student Profile</h3>
+            <p class="page-subtitle" id="formPageSubtitle">Update academic progress, semester records, arrear history, and career goals.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <a href="students.html" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+              <i class="bi bi-arrow-left"></i> Directory
+            </a>
+            <a href="#" id="btnViewProfileDirect" class="btn btn-outline-primary d-flex align-items-center gap-2">
+              <i class="bi bi-person-bounding-box"></i> View Full Profile
+            </a>
+          </div>
+        </div>
+
+        <!-- Wizard Steps Navigation -->
+        <div class="wizard-steps-nav">
+          <div class="wizard-step-item active" data-step="1" onclick="goToStep(1)">
+            <div class="step-number">1</div>
+            <span>Personal</span>
+          </div>
+          <div class="wizard-step-item" data-step="2" onclick="goToStep(2)">
+            <div class="step-number">2</div>
+            <span>Family</span>
+          </div>
+          <div class="wizard-step-item" data-step="3" onclick="goToStep(3)">
+            <div class="step-number">3</div>
+            <span>Academic</span>
+          </div>
+          <div class="wizard-step-item" data-step="4" onclick="goToStep(4)">
+            <div class="step-number">4</div>
+            <span>Arrears</span>
+          </div>
+          <div class="wizard-step-item" data-step="5" onclick="goToStep(5)">
+            <div class="step-number">5</div>
+            <span>Technical</span>
+          </div>
+          <div class="wizard-step-item" data-step="6" onclick="goToStep(6)">
+            <div class="step-number">6</div>
+            <span>Self-Eval</span>
+          </div>
+          <div class="wizard-step-item" data-step="7" onclick="goToStep(7)">
+            <div class="step-number">7</div>
+            <span>Career Goal</span>
+          </div>
+          <div class="wizard-step-item" data-step="8" onclick="goToStep(8)">
+            <div class="step-number">8</div>
+            <span>Review</span>
+          </div>
+        </div>
+
+        <!-- Form Card Container -->
+        <div class="custom-card">
+          <div class="card-body p-4">
+            <form id="studentWizardForm" novalidate>
+
+              <!-- STEP 1: PERSONAL DETAILS -->
+              <div class="form-step-section active" id="step1">
+                <h5 class="fw-bold text-primary mb-3 border-bottom pb-2">
+                  <i class="bi bi-person-lines-fill me-2"></i> Step 1: Student Personal Details
+                </h5>
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Register Number <span class="text-danger">*</span></label>
+                    <input type="text" id="pdRegisterNumber" class="form-control text-uppercase" required>
+                    <div class="invalid-feedback">Unique register number is required.</div>
+                  </div>
+
+                  <div class="col-md-5">
+                    <label class="form-label fw-semibold small">Student Full Name <span class="text-danger">*</span></label>
+                    <input type="text" id="pdName" class="form-control" required>
+                    <div class="invalid-feedback">Student name is required.</div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Date of Birth <span class="text-danger">*</span></label>
+                    <input type="date" id="pdDob" class="form-control" required>
+                    <div class="invalid-feedback">Date of birth is required.</div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Gender <span class="text-danger">*</span></label>
+                    <select id="pdGender" class="form-select" required>
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Department <span class="text-danger">*</span></label>
+                    <select id="pdDepartment" class="form-select" required>
+                      <option value="CSE">CSE</option>
+                      <option value="IT">IT</option>
+                      <option value="ECE">ECE</option>
+                      <option value="MECH">MECH</option>
+                      <option value="AIDS">AIDS</option>
+                      <option value="EEE">EEE</option>
+                      <option value="CIVIL">CIVIL</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-2">
+                    <label class="form-label fw-semibold small">Section <span class="text-danger">*</span></label>
+                    <input type="text" id="pdSection" class="form-control text-uppercase" required>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Mobile Number <span class="text-danger">*</span></label>
+                    <input type="tel" id="pdMobile" class="form-control" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Institutional Email <span class="text-danger">*</span></label>
+                    <input type="email" id="pdInstEmail" class="form-control" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Personal Email <span class="text-danger">*</span></label>
+                    <input type="email" id="pdPersonalEmail" class="form-control" required>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label fw-semibold small">Residential Address <span class="text-danger">*</span></label>
+                    <textarea id="pdAddress" class="form-control" rows="2" required></textarea>
+                  </div>
+
+                  <!-- CONDITIONAL CATEGORY FIELDS -->
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Student Category <span class="text-danger">*</span></label>
+                    <select id="pdCategory" class="form-select" onchange="handleCategoryChange()" required>
+                      <option value="Hosteller">Hosteller</option>
+                      <option value="Day Scholar">Day Scholar</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-8" id="hostellerFieldGroup" style="display: none;">
+                    <label class="form-label fw-semibold small">Hostel Name & Room Number</label>
+                    <input type="text" id="pdHostelName" class="form-control">
+                  </div>
+
+                  <div class="col-md-8" id="dayScholarFieldGroup" style="display: none;">
+                    <label class="form-label fw-semibold small">Distance from Residence to College (in km)</label>
+                    <input type="number" id="pdDistance" class="form-control" min="0">
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 2: FAMILY DETAILS -->
+              <div class="form-step-section" id="step2">
+                <h5 class="fw-bold text-primary mb-3 border-bottom pb-2">
+                  <i class="bi bi-people me-2"></i> Step 2: Parent and Family Details
+                </h5>
+                <div class="row g-3">
+                  <div class="col-12"><h6 class="fw-bold text-dark border-bottom pb-1">Father's Information</h6></div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Father's Name</label>
+                    <input type="text" id="fdFatherName" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Occupation</label>
+                    <input type="text" id="fdFatherOcc" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Annual Income Range</label>
+                    <select id="fdFatherIncome" class="form-select">
+                      <option value="">Select Range</option>
+                      <option value="Below ₹1 Lakh">Below ₹1 Lakh</option>
+                      <option value="₹1–3 Lakhs">₹1–3 Lakhs</option>
+                      <option value="₹3–5 Lakhs">₹3–5 Lakhs</option>
+                      <option value="₹5–10 Lakhs">₹5–10 Lakhs</option>
+                      <option value="Above ₹10 Lakhs">Above ₹10 Lakhs</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label fw-semibold small">Mobile Number</label>
+                    <input type="tel" id="fdFatherMobile" class="form-control">
+                  </div>
+
+                  <div class="col-12 mt-4"><h6 class="fw-bold text-dark border-bottom pb-1">Mother's Information</h6></div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Mother's Name</label>
+                    <input type="text" id="fdMotherName" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Occupation</label>
+                    <input type="text" id="fdMotherOcc" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">Annual Income Range</label>
+                    <select id="fdMotherIncome" class="form-select">
+                      <option value="">Select Range</option>
+                      <option value="Below ₹1 Lakh">Below ₹1 Lakh</option>
+                      <option value="₹1–3 Lakhs">₹1–3 Lakhs</option>
+                      <option value="₹3–5 Lakhs">₹3–5 Lakhs</option>
+                      <option value="₹5–10 Lakhs">₹5–10 Lakhs</option>
+                      <option value="Above ₹10 Lakhs">Above ₹10 Lakhs</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label fw-semibold small">Mobile Number</label>
+                    <input type="tel" id="fdMotherMobile" class="form-control">
+                  </div>
+
+                  <div class="col-12 mt-4"><h6 class="fw-bold text-dark border-bottom pb-1">Emergency & Support Information</h6></div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Parent / Guardian Name</label>
+                    <input type="text" id="fdGuardianName" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Emergency Contact Number <span class="text-danger">*</span></label>
+                    <input type="tel" id="fdEmergency" class="form-control" required>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">First Generation Graduate?</label>
+                    <select id="fdFirstGen" class="form-select">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Scholarship Received?</label>
+                    <select id="fdScholarship" class="form-select">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Financial / Scholarship Guidance Required?</label>
+                    <select id="fdGuidance" class="form-select">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 3: SEMESTER-WISE ACADEMIC RECORD -->
+              <div class="form-step-section" id="step3">
+                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                  <h5 class="fw-bold text-primary mb-0">
+                    <i class="bi bi-journal-bookmark-fill me-2"></i> Step 3: Semester Academic Records (1 to 8)
+                  </h5>
+                  <button type="button" class="btn btn-sm btn-outline-primary" onclick="showAddSemesterModal()">
+                    <i class="bi bi-plus-circle me-1"></i> Add Semester Record
+                  </button>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-bordered align-middle">
+                    <thead class="table-light small text-uppercase">
+                      <tr>
+                        <th>Sem #</th>
+                        <th>SGPA</th>
+                        <th>CGPA</th>
+                        <th>Attendance</th>
+                        <th>Arrear Status</th>
+                        <th>Arrears Count</th>
+                        <th>Strong Subjects</th>
+                        <th>Achievements</th>
+                        <th class="text-end">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="semesterRecordsTableBody">
+                      <!-- Dynamic rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- STEP 4: ARREAR MANAGEMENT -->
+              <div class="form-step-section" id="step4">
+                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                  <div>
+                    <h5 class="fw-bold text-primary mb-0">
+                      <i class="bi bi-exclamation-triangle-fill me-2"></i> Step 4: Arrear History & Remediation
+                    </h5>
+                    <small class="text-muted">Preserve complete arrear history, attempts, and clearing grades.</small>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-danger" onclick="showAddArrearModal()">
+                    <i class="bi bi-plus-circle me-1"></i> Add Arrear Record
+                  </button>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-bordered align-middle">
+                    <thead class="table-light small text-uppercase">
+                      <tr>
+                        <th>Occurred Sem</th>
+                        <th>Subject Code</th>
+                        <th>Subject Name</th>
+                        <th>Attempts</th>
+                        <th>Current Status</th>
+                        <th>Cleared Sem / Grade</th>
+                        <th>Remedial Req?</th>
+                        <th>Mentor Support?</th>
+                        <th class="text-end">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="arrearRecordsTableBody">
+                      <!-- Dynamic rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- STEP 5: TECHNICAL PROFILE -->
+              <div class="form-step-section" id="step5">
+                <h5 class="fw-bold text-primary mb-3 border-bottom pb-2">
+                  <i class="bi bi-laptop-fill me-2"></i> Step 5: Technical and Professional Profile
+                </h5>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Programming Languages (Comma-separated)</label>
+                    <input type="text" id="techLanguages" class="form-control">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Technical Skills (Comma-separated)</label>
+                    <input type="text" id="techSkills" class="form-control">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Preferred Technical Domain</label>
+                    <select id="techPreferredDomain" class="form-select">
+                      <option value="Web Development">Web Development</option>
+                      <option value="App Development">App Development</option>
+                      <option value="Data Science">Data Science</option>
+                      <option value="AI/ML">AI/ML</option>
+                      <option value="Cyber Security">Cyber Security</option>
+                      <option value="Cloud Computing">Cloud Computing</option>
+                      <option value="Software Development">Software Development</option>
+                      <option value="Networking">Networking</option>
+                      <option value="Other">Other / Core Engineering</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Areas of Interest (Comma-separated)</label>
+                    <input type="text" id="techInterests" class="form-control">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Communication Skill Level</label>
+                    <select id="techCommLevel" class="form-select">
+                      <option value="Beginner">Beginner</option>
+                      <option value="Intermediate">Intermediate</option>
+                      <option value="Advanced">Advanced</option>
+                      <option value="Excellent">Excellent</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Aptitude Skill Level</label>
+                    <select id="techAptLevel" class="form-select">
+                      <option value="Beginner">Beginner</option>
+                      <option value="Intermediate">Intermediate</option>
+                      <option value="Advanced">Advanced</option>
+                      <option value="Excellent">Excellent</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12 mt-4"><h6 class="fw-bold text-dark border-bottom pb-1">Online Professional Profile Links</h6></div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">GitHub URL</label>
+                    <input type="url" id="linkGithub" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">LinkedIn URL</label>
+                    <input type="url" id="linkLinkedin" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">HackerRank URL</label>
+                    <input type="url" id="linkHackerrank" class="form-control">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold small">HackerEarth URL</label>
+                    <input type="url" id="linkHackerearth" class="form-control">
+                  </div>
+
+                  <div class="col-12 mt-4 d-flex align-items-center justify-content-between border-bottom pb-1">
+                    <h6 class="fw-bold text-dark mb-0">Practical Projects</h6>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addProjectRow()">
+                      <i class="bi bi-plus-lg me-1"></i> Add Project
+                    </button>
+                  </div>
+                  <div class="col-12" id="projectsContainer"></div>
+
+                  <div class="col-12 mt-3 d-flex align-items-center justify-content-between border-bottom pb-1">
+                    <h6 class="fw-bold text-dark mb-0">Certifications</h6>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addCertRow()">
+                      <i class="bi bi-plus-lg me-1"></i> Add Certification
+                    </button>
+                  </div>
+                  <div class="col-12" id="certsContainer"></div>
+
+                  <div class="col-12 mt-3 d-flex align-items-center justify-content-between border-bottom pb-1">
+                    <h6 class="fw-bold text-dark mb-0">Internships</h6>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addInternshipRow()">
+                      <i class="bi bi-plus-lg me-1"></i> Add Internship
+                    </button>
+                  </div>
+                  <div class="col-12" id="internshipsContainer"></div>
+                </div>
+              </div>
+
+              <!-- STEP 6: SELF-EVALUATION -->
+              <div class="form-step-section" id="step6">
+                <h5 class="fw-bold text-primary mb-3 border-bottom pb-2">
+                  <i class="bi bi-chat-heart-fill me-2"></i> Step 6: Strengths & Self-Evaluation Analysis
+                </h5>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Academic Strengths</label>
+                    <textarea id="seAcademicStrengths" class="form-control" rows="2"></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Technical Strengths</label>
+                    <textarea id="seTechnicalStrengths" class="form-control" rows="2"></textarea>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Communication Strengths</label>
+                    <input type="text" id="seCommStrengths" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Leadership Qualities</label>
+                    <input type="text" id="seLeadership" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Teamwork Abilities</label>
+                    <input type="text" id="seTeamwork" class="form-control">
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                    <label class="form-label fw-semibold small">Areas for Improvement</label>
+                    <textarea id="seImprovementAreas" class="form-control" rows="2"></textarea>
+                  </div>
+                  <div class="col-md-6 mt-3">
+                    <label class="form-label fw-semibold small">Subjects Requiring Support</label>
+                    <textarea id="seSubjectsSupport" class="form-control" rows="2"></textarea>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Technical Skills to Develop</label>
+                    <input type="text" id="seTechToDevelop" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Communication Skills to Improve</label>
+                    <input type="text" id="seCommToImprove" class="form-control">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small">Aptitude Skills to Improve</label>
+                    <input type="text" id="seAptToImprove" class="form-control">
+                  </div>
+
+                  <div class="col-12 mt-3">
+                    <label class="form-label fw-semibold small">Support Expected from Faculty Mentor</label>
+                    <textarea id="seMentorExpected" class="form-control" rows="2"></textarea>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Short-Term Goal</label>
+                    <input type="text" id="seShortTermGoal" class="form-control">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Long-Term Goal</label>
+                    <input type="text" id="seLongTermGoal" class="form-control">
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 7: CAREER GOAL -->
+              <div class="form-step-section" id="step7">
+                <h5 class="fw-bold text-primary mb-3 border-bottom pb-2">
+                  <i class="bi bi-compass-fill me-2"></i> Step 7: Primary Career Goal
+                </h5>
+
+                <div class="mb-4">
+                  <label class="form-label fw-bold small text-dark d-block">Select Primary Career Track <span class="text-danger">*</span></label>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="careerGoalChoice" id="goalPlacement" value="Placement" checked onchange="handleGoalChange()">
+                    <label class="btn btn-outline-primary py-3 fw-semibold" for="goalPlacement">
+                      <i class="bi bi-briefcase-fill d-block fs-4 mb-1"></i> A. Campus Placement
+                    </label>
+
+                    <input type="radio" class="btn-check" name="careerGoalChoice" id="goalHigherStudies" value="Higher Studies" onchange="handleGoalChange()">
+                    <label class="btn btn-outline-primary py-3 fw-semibold" for="goalHigherStudies">
+                      <i class="bi bi-bank d-block fs-4 mb-1"></i> B. Higher Studies
+                    </label>
+
+                    <input type="radio" class="btn-check" name="careerGoalChoice" id="goalEntrepreneurship" value="Entrepreneurship" onchange="handleGoalChange()">
+                    <label class="btn btn-outline-primary py-3 fw-semibold" for="goalEntrepreneurship">
+                      <i class="bi bi-lightbulb-fill d-block fs-4 mb-1"></i> C. Entrepreneurship
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 7A. PLACEMENT FIELDS -->
+                <div id="placementFieldsGroup" class="p-3 bg-light rounded border">
+                  <h6 class="fw-bold text-primary mb-3"><i class="bi bi-building-check me-2"></i> Placement Details</h6>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Preferred Job Role</label>
+                      <input type="text" id="cgPlacementRole" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Target Domain</label>
+                      <input type="text" id="cgPlacementDomain" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Company Type</label>
+                      <select id="cgPlacementCompanyType" class="form-select">
+                        <option value="">Select Type</option>
+                        <option value="Product">Product Company</option>
+                        <option value="Service">Service Company</option>
+                        <option value="Core">Core Engineering</option>
+                        <option value="Start-up">High-Growth Start-up</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Expected Salary Range</label>
+                      <input type="text" id="cgPlacementSalary" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Preferred Location</label>
+                      <input type="text" id="cgPlacementLocation" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Target Companies (Comma-separated)</label>
+                      <input type="text" id="cgPlacementCompanies" class="form-control">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Training Support Required</label>
+                      <textarea id="cgPlacementTraining" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Skills to Improve</label>
+                      <textarea id="cgPlacementSkills" class="form-control" rows="2"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 7B. HIGHER STUDIES FIELDS -->
+                <div id="higherStudiesFieldsGroup" class="p-3 bg-light rounded border" style="display: none;">
+                  <h6 class="fw-bold text-primary mb-3"><i class="bi bi-mortarboard me-2"></i> Higher Studies Details</h6>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Preferred Programme</label>
+                      <input type="text" id="cgHsProgramme" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Specialization</label>
+                      <input type="text" id="cgHsSpecialization" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Preferred Country</label>
+                      <input type="text" id="cgHsCountry" class="form-control">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Target Institutions (Comma-separated)</label>
+                      <input type="text" id="cgHsInstitutions" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label fw-semibold small">Planned Examinations</label>
+                      <input type="text" id="cgHsExams" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label fw-semibold small">Expected Admission Year</label>
+                      <input type="number" id="cgHsYear" class="form-control">
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label fw-semibold small">Guidance Required</label>
+                      <textarea id="cgHsGuidance" class="form-control" rows="2"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 7C. ENTREPRENEURSHIP FIELDS -->
+                <div id="entrepreneurshipFieldsGroup" class="p-3 bg-light rounded border" style="display: none;">
+                  <h6 class="fw-bold text-primary mb-3"><i class="bi bi-rocket-takeoff me-2"></i> Entrepreneurship Details</h6>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Startup Idea</label>
+                      <input type="text" id="cgEntIdea" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Current Stage</label>
+                      <select id="cgEntStage" class="form-select">
+                        <option value="Idea">Idea Stage</option>
+                        <option value="Prototype">Prototype Stage</option>
+                        <option value="MVP">MVP</option>
+                        <option value="Revenue">Revenue</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Problem Addressed</label>
+                      <textarea id="cgEntProblem" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Proposed Solution</label>
+                      <textarea id="cgEntSolution" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Target Customers</label>
+                      <input type="text" id="cgEntCustomers" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-semibold small">Team Details</label>
+                      <input type="text" id="cgEntTeam" class="form-control">
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Technology Support</label>
+                      <input type="text" id="cgEntTechSupport" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Funding Support</label>
+                      <input type="text" id="cgEntFunding" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-semibold small">Launch Year</label>
+                      <input type="number" id="cgEntYear" class="form-control">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 8: REVIEW & CONSENT SUBMISSION -->
+              <div class="form-step-section" id="step8">
+                <h5 class="fw-bold text-primary mb-3 border-bottom pb-2">
+                  <i class="bi bi-check2-all me-2"></i> Step 8: Review & Update Confirmation
+                </h5>
+
+                <div id="reviewSummaryContent" class="mb-4"></div>
+
+                <div class="p-3 bg-light rounded border mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="profilingConsent" checked required>
+                    <label class="form-check-label fw-bold text-dark" for="profilingConsent">
+                      "I confirm that the information provided is intended for legitimate academic mentoring, student support and career guidance purposes."
+                    </label>
+                    <div class="invalid-feedback">Consent confirmation is mandatory.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Wizard Footer Navigation Buttons -->
+              <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-4">
+                <button type="button" class="btn btn-outline-secondary" id="btnPrev" onclick="prevStep()" disabled>
+                  <i class="bi bi-arrow-left me-1"></i> Previous
+                </button>
+
+                <div class="d-flex gap-2">
+                  <a href="students.html" class="btn btn-light text-muted">Cancel</a>
+                  <button type="button" class="btn btn-primary" id="btnNext" onclick="nextStep()" style="background-color: var(--inverse-bg); color: var(--inverse-fg);">
+                    Next <i class="bi bi-arrow-right ms-1"></i>
+                  </button>
+                  <button type="button" class="btn btn-success d-none" id="btnSubmit" onclick="submitStudentForm()">
+                    <i class="bi bi-cloud-check-fill me-1"></i> <span id="submitBtnLabel">Update Student Profile</span>
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Shared Modals for Semester & Arrear -->
+  <div class="modal fade" id="semesterModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white" style="background-color: var(--inverse-bg) !important; color: var(--inverse-fg) !important;">
+          <h5 class="modal-title" id="semModalTitle">Add Semester Record</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="modalSemesterForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Semester Number <span class="text-danger">*</span></label>
+                <select id="modalSemNumber" class="form-select" required>
+                  <option value="1">Semester 1</option>
+                  <option value="2">Semester 2</option>
+                  <option value="3">Semester 3</option>
+                  <option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option>
+                  <option value="6">Semester 6</option>
+                  <option value="7">Semester 7</option>
+                  <option value="8">Semester 8</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Attendance (%) <span class="text-danger">*</span></label>
+                <input type="number" id="modalSemAttendance" class="form-control" min="0" max="100" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Semester SGPA <span class="text-danger">*</span></label>
+                <input type="number" id="modalSemSgpa" class="form-control" min="0" max="10" step="0.01" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Cumulative CGPA <span class="text-danger">*</span></label>
+                <input type="number" id="modalSemCgpa" class="form-control" min="0" max="10" step="0.01" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Arrear Status</label>
+                <select id="modalSemArrearStatus" class="form-select">
+                  <option value="No">No Arrears</option>
+                  <option value="Yes">Yes (Arrear Occurred)</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Number of Arrears</label>
+                <input type="number" id="modalSemArrearCount" class="form-control" value="0" min="0">
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Subjects with Strong Performance</label>
+                <input type="text" id="modalSemStrongSubjects" class="form-control">
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Academic Achievements</label>
+                <input type="text" id="modalSemAchievements" class="form-control">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveSemesterFromModal()">Save Semester</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="arrearModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="arrearModalTitle">Add Arrear Record</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="modalArrearForm">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Occurred in Semester <span class="text-danger">*</span></label>
+                <select id="modalArrearOccurredSem" class="form-select" required>
+                  <option value="1">Semester 1</option>
+                  <option value="2">Semester 2</option>
+                  <option value="3">Semester 3</option>
+                  <option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option>
+                  <option value="6">Semester 6</option>
+                  <option value="7">Semester 7</option>
+                  <option value="8">Semester 8</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Subject Code <span class="text-danger">*</span></label>
+                <input type="text" id="modalArrearSubCode" class="form-control text-uppercase" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Subject Name <span class="text-danger">*</span></label>
+                <input type="text" id="modalArrearSubName" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Number of Attempts</label>
+                <input type="number" id="modalArrearAttempts" class="form-control" value="1" min="1">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Current Status</label>
+                <select id="modalArrearStatus" class="form-select" onchange="toggleModalClearedFields()">
+                  <option value="Pending">Pending</option>
+                  <option value="Cleared">Cleared</option>
+                </select>
+              </div>
+              <div class="col-md-4" id="modalClearedSemGroup" style="display: none;">
+                <label class="form-label fw-semibold small">Semester Cleared</label>
+                <select id="modalArrearClearedSem" class="form-select">
+                  <option value="">Select Sem</option>
+                  <option value="2">Semester 2</option>
+                  <option value="3">Semester 3</option>
+                  <option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option>
+                  <option value="6">Semester 6</option>
+                  <option value="7">Semester 7</option>
+                  <option value="8">Semester 8</option>
+                </select>
+              </div>
+              <div class="col-md-4" id="modalClearedGradeGroup" style="display: none;">
+                <label class="form-label fw-semibold small">Grade Obtained After Clearing</label>
+                <input type="text" id="modalArrearClearedGrade" class="form-control text-uppercase">
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Reason for Difficulty</label>
+                <textarea id="modalArrearReason" class="form-control" rows="2"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Remedial Training Required?</label>
+                <select id="modalArrearRemedial" class="form-select">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Mentor Counseling Support Required?</label>
+                <select id="modalArrearMentorSupport" class="form-select">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" onclick="saveArrearFromModal()">Save Arrear Record</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/add-student.js"></script>
+  <script src="js/student-form.js"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Dashboard | Student Profiling System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app-wrapper">
+    <main id="main-content">
+      <div class="page-container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div>
+            <h3 class="page-title">Mentor & Faculty Dashboard</h3>
+            <p class="page-subtitle">Holistic overview of student academic performance, arrears, career goals, and mentoring interventions.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <a href="add-student.html" class="btn btn-primary d-flex align-items-center gap-2" style="background-color: var(--inverse-bg); color: var(--inverse-fg);">
+              <i class="bi bi-person-plus-fill"></i> Add New Student
+            </a>
+            <a href="reports.html" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+              <i class="bi bi-download"></i> Export Reports
+            </a>
+          </div>
+        </div>
+
+        <!-- 10 KPI Summary Cards -->
+        <div class="row g-3 mb-4">
+          <!-- 1. Total Students -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-primary-subtle text-primary">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiTotalStudents">--</div>
+                <div class="kpi-label">Total Students</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Hostellers -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-info-subtle text-info">
+                <i class="bi bi-building"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiHostellers">--</div>
+                <div class="kpi-label">Hostellers</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Day Scholars -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-secondary-subtle text-secondary">
+                <i class="bi bi-bus-front-fill"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiDayScholars">--</div>
+                <div class="kpi-label">Day Scholars</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Average CGPA -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-success-subtle text-success">
+                <i class="bi bi-award-fill"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiAvgCgpa">--</div>
+                <div class="kpi-label">Average CGPA</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Highest CGPA -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-warning-subtle text-warning">
+                <i class="bi bi-trophy-fill"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiHighestCgpa">--</div>
+                <div class="kpi-label">Highest CGPA</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Lowest CGPA -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-dark-subtle text-dark">
+                <i class="bi bi-graph-down"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiLowestCgpa">--</div>
+                <div class="kpi-label">Lowest CGPA</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Active Arrears -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-danger-subtle text-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+              </div>
+              <div>
+                <div class="kpi-value text-danger" id="kpiActiveArrears">--</div>
+                <div class="kpi-label">Active Arrears</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Pending Arrears -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-warning-subtle text-warning">
+                <i class="bi bi-clock-history"></i>
+              </div>
+              <div>
+                <div class="kpi-value" id="kpiPendingArrears">--</div>
+                <div class="kpi-label">Pending Arrears</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. Cleared Arrears -->
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+            <div class="kpi-card">
+              <div class="kpi-icon-wrapper bg-success-subtle text-success">
+                <i class="bi bi-patch-check-fill"></i>
+              </div>
+              <div>
+                <div class="kpi-value text-success" id="kpiClearedArrears">--</div>
+                <div class="kpi-label">Cleared Arrears</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. Students Requiring Intervention -->
+          <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <div class="kpi-card border-warning">
+              <div class="kpi-icon-wrapper bg-warning text-dark">
+                <i class="bi bi-shield-exclamation"></i>
+              </div>
+              <div>
+                <div class="kpi-value text-warning-emphasis" id="kpiAttentionCount">--</div>
+                <div class="kpi-label">Attention Required</div>
+              </div>
+              <a href="mentor-attention.html" class="btn btn-sm btn-outline-warning ms-auto" title="View all">
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 Interactive Charts -->
+        <div class="row g-3 mb-4">
+          <!-- Chart 1: Semester SGPA Trend -->
+          <div class="col-lg-8">
+            <div class="custom-card h-100">
+              <div class="card-header">
+                <span><i class="bi bi-graph-up text-primary me-2"></i> Semester-wise Average SGPA Progression</span>
+                <span class="badge bg-light text-muted border">Academic Trend</span>
+              </div>
+              <div class="card-body">
+                <canvas id="semesterSgpaChart" height="110"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 2: Career Goal Distribution -->
+          <div class="col-lg-4">
+            <div class="custom-card h-100">
+              <div class="card-header">
+                <span><i class="bi bi-pie-chart-fill text-info me-2"></i> Career Goal Distribution</span>
+              </div>
+              <div class="card-body d-flex align-items-center justify-content-center">
+                <canvas id="careerGoalChart" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 3: CGPA Distribution -->
+          <div class="col-lg-4">
+            <div class="custom-card h-100">
+              <div class="card-header">
+                <span><i class="bi bi-bar-chart-fill text-success me-2"></i> CGPA Distribution</span>
+              </div>
+              <div class="card-body">
+                <canvas id="cgpaDistributionChart" height="180"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 4: Hosteller vs Day Scholar -->
+          <div class="col-lg-4">
+            <div class="custom-card h-100">
+              <div class="card-header">
+                <span><i class="bi bi-pie-chart text-secondary me-2"></i> Hostellers vs Day Scholars</span>
+              </div>
+              <div class="card-body d-flex align-items-center justify-content-center">
+                <canvas id="categoryRatioChart" height="180"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 5: Pending vs Cleared Arrears -->
+          <div class="col-lg-4">
+            <div class="custom-card h-100">
+              <div class="card-header">
+                <span><i class="bi bi-activity text-danger me-2"></i> Arrear Status Breakdown</span>
+              </div>
+              <div class="card-body d-flex align-items-center justify-content-center">
+                <canvas id="arrearStatusChart" height="180"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 6: Department-wise Student Count -->
+          <div class="col-lg-12">
+            <div class="custom-card">
+              <div class="card-header">
+                <span><i class="bi bi-diagram-3-fill text-primary me-2"></i> Department-wise Student Enrollment</span>
+              </div>
+              <div class="card-body">
+                <canvas id="departmentChart" height="70"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mentoring Intelligence & Student Watchlists -->
+        <div class="row g-3">
+          <!-- Students Requiring Mentor Attention -->
+          <div class="col-lg-6">
+            <div class="custom-card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-exclamation-octagon-fill text-warning me-2"></i> Mentor Attention Required</span>
+                <a href="mentor-attention.html" class="btn btn-sm btn-outline-primary" style="font-size: 0.78rem;">View All</a>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table custom-table mb-0" id="tableAttention">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Dept</th>
+                        <th>CGPA</th>
+                        <th>Reason for Attention</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="attentionListBody">
+                      <tr><td colspan="5" class="text-center py-3 text-muted">Loading attention watchlist...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Students with Active Arrears -->
+          <div class="col-lg-6">
+            <div class="custom-card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-exclamation-triangle text-danger me-2"></i> Students with Active Arrears</span>
+                <a href="students.html?arrearStatus=Pending" class="btn btn-sm btn-outline-danger" style="font-size: 0.78rem;">View All</a>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table custom-table mb-0" id="tableActiveArrears">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Dept</th>
+                        <th>Pending Arrears</th>
+                        <th>Subjects</th>
+                        <th>Profile</th>
+                      </tr>
+                    </thead>
+                    <tbody id="arrearListBody">
+                      <tr><td colspan="5" class="text-center py-3 text-muted">Loading arrear list...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Students Showing Academic Decline -->
+          <div class="col-lg-6">
+            <div class="custom-card">
+              <div class="card-header">
+                <span><i class="bi bi-graph-down-arrow text-danger me-2"></i> Students with Declining SGPA Trend</span>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table custom-table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Dept</th>
+                        <th>Trend Detail</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="decliningListBody">
+                      <tr><td colspan="4" class="text-center py-3 text-muted">Checking academic trends...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Students Showing Academic Improvement -->
+          <div class="col-lg-6">
+            <div class="custom-card">
+              <div class="card-header">
+                <span><i class="bi bi-graph-up-arrow text-success me-2"></i> Students with Improving SGPA Trend</span>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table custom-table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Dept</th>
+                        <th>Trend Detail</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="improvingListBody">
+                      <tr><td colspan="4" class="text-center py-3 text-muted">Checking academic trends...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Student Profiles -->
+          <div class="col-lg-12">
+            <div class="custom-card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-clock-history text-primary me-2"></i> Recently Registered / Updated Student Profiles</span>
+                <a href="students.html" class="btn btn-sm btn-outline-primary" style="font-size: 0.78rem;">Full Directory</a>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table custom-table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Register No</th>
+                        <th>Student Name</th>
+                        <th>Department</th>
+                        <th>Current CGPA</th>
+                        <th>Career Goal</th>
+                        <th>Registered Date</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="recentListBody">
+                      <tr><td colspan="7" class="text-center py-3 text-muted">Loading recent students...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/chart-theme.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+STUDENT PROFILING SYSTEM - VERCEL DEPLOYMENT GUIDE
+==================================================
+
+IMPORTANT
+---------
+Vercel currently supports Express applications. This repository has a root
+server.js that imports Express, so try Vercel's Express detection first; a
+separate API rewrite is not automatically required. Vercel serves files in
+public/ from its CDN. Express static middleware is not used to serve those
+files on Vercel.
+
+Do not deploy publicly until the database mismatch and preview-login bypass
+described below are fixed. Otherwise some pages or review actions can fail,
+and protected pages may not be protected.
+
+STEP 1 - PREPARE THE DATABASES
+------------------------------
+This project currently uses both MongoDB Atlas and PostgreSQL:
+
+- Form submission and application listing use MongoDB Atlas.
+- Approval/rejection, users, student records, settings, audit logs, and
+  insights use PostgreSQL.
+- The application review controller looks up applications in PostgreSQL,
+  even though new submissions are currently saved in MongoDB. These stores
+  are not synchronized, so the full submit-to-approval workflow will fail.
+
+Before deployment, choose one database design and make the submit/list/review
+flow use it consistently, or implement reliable synchronization between both
+databases. Do not assume setting both connection strings solves this mismatch.
+
+1. Create or select the MongoDB Atlas cluster used for submissions.
+2. Create a database user with only the permissions this application needs.
+3. Configure Atlas Network Access to permit Vercel's outbound connections.
+   Use the narrowest supported network range or static-egress option for your
+   Vercel plan. Do not expose database credentials in source code.
+4. Create or select the Supabase PostgreSQL project used by the rest of the
+   application.
+5. Set DATABASE_URL to the Supabase PostgreSQL connection string. If using a
+   pooled connection, use the connection string recommended by Supabase for
+   serverless clients.
+6. Run the schema/bootstrap once from a trusted machine after DATABASE_URL is
+   configured locally:
+
+       npm install
+       npm run seed
+
+   The seed script initializes config/schema.sql and can set up the initial
+   administrator when its environment values are present. Do not run database
+   schema migrations independently on every serverless request.
+
+STEP 2 - FIX PRODUCTION SECURITY
+-------------------------------
+1. In middleware/authMiddleware.js, remove or development-gate the hard-coded
+   local-frontend-preview token bypass. Anyone who knows that token can
+   currently be treated as an administrator by the backend.
+2. In public/js/common.js, disable the automatic preview-user session in
+   production. Require a real login for staff-only pages.
+3. Replace the fallback JWT secret with a strong random JWT_SECRET supplied
+   only through Vercel environment variables.
+4. Keep the student application POST route public only if public submissions
+   are intentional. Add suitable anti-spam controls and validate submissions
+   on the server.
+5. The in-memory application fallback is not persistent on Vercel. Change
+   production behavior to return a clear service error when MongoDB is
+   unavailable instead of claiming the submission was saved.
+
+STEP 3 - CHECK LOCAL STARTUP
+----------------------------
+1. Ensure .env is not committed. It is listed in .gitignore; keep it that way.
+2. Install dependencies and start the real backend locally:
+
+       npm install
+       npm start
+
+3. Confirm the startup log reports MongoDB Atlas connected and that
+   PostgreSQL is configured. The current repository warns that DATABASE_URL
+   is required; dashboard and staff features that query PostgreSQL will fail
+   until it is set.
+4. Submit a test application, verify it in the chosen database, then test the
+   review/approval flow. Do not proceed until all of these use the same
+   persisted application data.
+
+STEP 4 - IMPORT THE GITHUB REPOSITORY
+-------------------------------------
+1. Push the prepared code to the GitHub repository.
+2. Sign in to Vercel and choose Add New Project.
+3. Import the studentcom GitHub repository and authorize Vercel to read it.
+4. Let Vercel detect the Express project. The project uses package.json and
+   server.js; there is no frontend build command in package.json.
+5. Leave the output directory unset unless Vercel's project detection asks
+   for a framework-specific value. Keep the frontend pages and assets under
+   public/ so Vercel can serve them as static assets.
+6. Do not add a custom vercel.json routing file unless deployment logs show
+   that automatic Express detection did not configure the routes correctly.
+
+STEP 5 - ADD ENVIRONMENT VARIABLES IN VERCEL
+--------------------------------------------
+In Project Settings > Environment Variables, add the values required by the
+project. Add them for Production and Preview as appropriate. Use real values
+in the Vercel dashboard; never paste secrets into this file or GitHub.
+
+Required for MongoDB submissions:
+- MONGODB_URI
+- MONGODB_DB_NAME (for example: studentProfilingSystem)
+
+Required for PostgreSQL-backed features:
+- DATABASE_URL
+
+Required for authentication and first administrator setup:
+- JWT_SECRET (long, random, unique production value)
+- JWT_EXPIRES_IN (for example: 7d)
+- INITIAL_ADMIN_NAME
+- INITIAL_ADMIN_EMAIL
+- INITIAL_ADMIN_PASSWORD (strong, one-time password)
+
+Optional settings supported by this code:
+- ATTENDANCE_ATTENTION_THRESHOLD
+- CGPA_ATTENTION_THRESHOLD
+- PGSSL (leave unset unless the PostgreSQL provider requires a specific
+  setting; config/postgres.js uses SSL by default)
+- NODE_ENV=production
+
+Do not set PORT in Vercel unless Vercel specifically instructs you to. Vercel
+provides the port/runtime integration. After changing environment variables,
+redeploy so the new deployment receives them.
+
+STEP 6 - DEPLOY AND CHECK LOGS
+------------------------------
+1. Deploy first as a Preview deployment.
+2. Check the Vercel build and Function logs for missing variables, database
+   access failures, function timeouts, or failed imports.
+3. Open the deployed site and test the actual login flow.
+4. Submit a test form and verify the record exists in MongoDB Atlas.
+5. Refresh the application review page and test approve/reject. Confirm the
+   review action updates the same record and creates the intended student
+   profile in its persistent database.
+6. Test dashboard, settings, analytics, and reports. They depend on
+   PostgreSQL, not just MongoDB.
+7. Remove test records after confirming the full flow.
+8. Once Preview works, promote/deploy to Production and add the production
+   domain in Vercel.
+
+STEP 7 - KNOW THE VERCEL LIMITS
+------------------------------
+- Vercel functions are not a permanent Node process. Do not rely on in-memory
+  data, local file writes, or a process staying alive between requests.
+- Reuse database connections safely; avoid opening a new MongoDB or
+  PostgreSQL connection for every request.
+- The in-memory express-rate-limit store is not shared between serverless
+  instances. Use a supported shared rate-limit store or platform protections
+  for production traffic.
+- Do not assume Socket.IO connections work like they do on a continuously
+  running server. Verify Vercel's current WebSocket support for your plan or
+  use a managed real-time service/polling.
+- Vercel deployment does not provide a PostgreSQL database. Supabase and
+  MongoDB Atlas remain separately hosted services.
+
+PROJECT-SPECIFIC ITEMS TO FIX BEFORE PRODUCTION
+-----------------------------------------------
+1. Align MongoDB application writes with PostgreSQL approval reads/writes.
+2. Configure DATABASE_URL; otherwise PostgreSQL-backed APIs return errors.
+3. Remove the preview administrator bypass from production authentication.
+4. Disable in-memory persistence fallback in production.
+5. Check /api/health routing. In server.js it is registered after the
+   compatibility router, which can intercept API paths before the health
+   handler runs.
+
+Vercel Express documentation:
+https://vercel.com/docs/frameworks/backend/express

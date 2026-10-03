@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Reports | Student Profiling System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app-wrapper">
+    <main id="main-content">
+      <div class="page-container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div>
+            <h3 class="page-title">Academic & Mentoring Reports</h3>
+            <p class="page-subtitle">Export official CSV data reports for department reviews, academic audits, and career guidance meetings.</p>
+          </div>
+        </div>
+
+        <!-- Privacy Alert -->
+        <div class="alert alert-light border py-2 px-3 small d-flex align-items-center gap-2 mb-4">
+          <i class="bi bi-shield-check text-success fs-5"></i>
+          <div>
+            <strong>Privacy Compliance:</strong> All generated reports strictly conform to college privacy regulations. Sensitive family and parent income details are never included in bulk export documents.
+          </div>
+        </div>
+
+        <!-- Department Filter -->
+        <div class="custom-card mb-4">
+          <div class="card-body">
+            <div class="row g-3 align-items-center">
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-muted">Select Target Department:</label>
+                <select id="reportDeptSelect" class="form-select">
+                  <option value="">All Departments (College-Wide)</option>
+                  <option value="CSE">Computer Science and Engineering (CSE)</option>
+                  <option value="IT">Information Technology (IT)</option>
+                  <option value="ECE">Electronics and Communication Engineering (ECE)</option>
+                  <option value="MECH">Mechanical Engineering (MECH)</option>
+                  <option value="AIDS">Artificial Intelligence and Data Science (AIDS)</option>
+                </select>
+              </div>
+              <div class="col-md-6 text-md-end pt-md-4">
+                <span class="text-muted small"><i class="bi bi-filetype-csv me-1"></i> Output Format: Comma Separated Values (.csv)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Report Export Cards Grid -->
+        <div class="row g-4">
+          <!-- 1. Student Directory Report -->
+          <div class="col-lg-6">
+            <div class="custom-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="kpi-icon-wrapper bg-primary-subtle text-primary">
+                    <i class="bi bi-people-fill"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold text-dark mb-0">Students Directory Report</h5>
+                    <small class="text-muted">General Master Profile List</small>
+                  </div>
+                </div>
+                <p class="small text-muted mb-4 flex-grow-1">
+                  Exports student register numbers, names, departments, sections, categories, contact emails, current cumulative CGPA, and career goals.
+                </p>
+                <button type="button" class="btn btn-primary w-100" onclick="downloadReport('students')" style="background-color: var(--inverse-bg); color: var(--inverse-fg);">
+                  <i class="bi bi-download me-2"></i> Download Students Directory (.CSV)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Academic Performance Report -->
+          <div class="col-lg-6">
+            <div class="custom-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="kpi-icon-wrapper bg-success-subtle text-success">
+                    <i class="bi bi-journal-check"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold text-dark mb-0">Academic Performance Report</h5>
+                    <small class="text-muted">Semester-wise SGPA & CGPA Breakdown</small>
+                  </div>
+                </div>
+                <p class="small text-muted mb-4 flex-grow-1">
+                  Exports semester-by-semester SGPA, cumulative CGPA, attendance percentages, arrear flags, and recorded student academic achievements.
+                </p>
+                <button type="button" class="btn btn-success w-100" onclick="downloadReport('academics')">
+                  <i class="bi bi-download me-2"></i> Download Academic Performance (.CSV)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Arrear Management Report -->
+          <div class="col-lg-6">
+            <div class="custom-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="kpi-icon-wrapper bg-danger-subtle text-danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold text-dark mb-0">Arrear Management & Remediation Report</h5>
+                    <small class="text-muted">Pending and Cleared Arrear History</small>
+                  </div>
+                </div>
+                <p class="small text-muted mb-4 flex-grow-1">
+                  Detailed subject-wise arrear occurrences, number of exam attempts, current pending/cleared status, cleared semesters, clearing grades, and remedial coaching flags.
+                </p>
+                <button type="button" class="btn btn-danger w-100" onclick="downloadReport('arrears')">
+                  <i class="bi bi-download me-2"></i> Download Arrear Report (.CSV)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Career Goals & Industry Readiness -->
+          <div class="col-lg-6">
+            <div class="custom-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="kpi-icon-wrapper bg-info-subtle text-info">
+                    <i class="bi bi-compass-fill"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold text-dark mb-0">Career Goals & Aspirations Report</h5>
+                    <small class="text-muted">Placement, Higher Studies & Startups</small>
+                  </div>
+                </div>
+                <p class="small text-muted mb-4 flex-grow-1">
+                  Summary of student career goal choices, target company types, salary expectations, target foreign universities/exams, or entrepreneurship venture stages.
+                </p>
+                <button type="button" class="btn btn-info text-white w-100" onclick="downloadReport('career')">
+                  <i class="bi bi-download me-2"></i> Download Career Goals Report (.CSV)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Mentor Interventions & Counseling Log -->
+          <div class="col-lg-12">
+            <div class="custom-card">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div class="kpi-icon-wrapper bg-warning-subtle text-warning">
+                    <i class="bi bi-chat-heart-fill"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold text-dark mb-0">Mentor Interventions & Counseling Log Report</h5>
+                    <small class="text-muted">Official Mentoring Session Logs & Follow-up Dates</small>
+                  </div>
+                </div>
+                <p class="small text-muted mb-3">
+                  Exports logged faculty counseling sessions, meeting dates, intervention reasons, actions taken, assigned student mentors, and follow-up deadlines.
+                </p>
+                <button type="button" class="btn btn-warning fw-semibold text-dark" onclick="downloadReport('mentor-intervention')">
+                  <i class="bi bi-download me-2"></i> Download Mentor Interventions Log (.CSV)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/reports.js"></script>
+</body>
+</html>

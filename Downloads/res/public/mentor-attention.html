@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentor Attention | Student Profiling System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app-wrapper">
+    <main id="main-content">
+      <div class="page-container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div>
+            <h3 class="page-title">Mentor Attention & Early Intervention Center</h3>
+            <p class="page-subtitle">Rule-based proactive mentoring system identifying students needing academic guidance or welfare support.</p>
+          </div>
+          <a href="reports.html?type=mentor-intervention" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="bi bi-download"></i> Export Intervention Log
+          </a>
+        </div>
+
+        <!-- Filter Pills & Reason Filter -->
+        <div class="custom-card mb-4">
+          <div class="card-body">
+            <div class="row g-3 align-items-center">
+              <div class="col-md-5">
+                <label class="form-label small fw-bold text-muted">Filter by Attention Trigger:</label>
+                <select id="attentionReasonFilter" class="form-select">
+                  <option value="">All Triggers</option>
+                  <option value="arrear">Pending Academic Arrears</option>
+                  <option value="attendance">Low Attendance (< 75%)</option>
+                  <option value="cgpa">Low CGPA (< 6.5)</option>
+                  <option value="declining">Declining SGPA Trend</option>
+                  <option value="project">Missing Projects / Portfolio</option>
+                  <option value="requested">Student Explicitly Requested Support</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted">Filter by Department:</label>
+                <select id="attentionDeptFilter" class="form-select">
+                  <option value="">All Departments</option>
+                  <option value="CSE">CSE</option>
+                  <option value="IT">IT</option>
+                  <option value="ECE">ECE</option>
+                  <option value="MECH">MECH</option>
+                  <option value="AIDS">AIDS</option>
+                </select>
+              </div>
+
+              <div class="col-md-3 text-end pt-4">
+                <span class="badge bg-warning-subtle text-warning-emphasis fs-6 p-2 border border-warning" id="attentionTotalCount">
+                  0 Students Flagged
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attention Cards Grid -->
+        <div class="row g-3" id="attentionCardsGrid">
+          <div class="col-12 text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-muted mt-2">Evaluating academic rules and identifying students...</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Quick Intervention Modal -->
+  <div class="modal fade" id="quickInterventionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white" style="background-color: var(--inverse-bg) !important; color: var(--inverse-fg) !important;">
+          <h5 class="modal-title"><i class="bi bi-clipboard-check me-2"></i> Log Mentor Counseling Session</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="quickInterventionForm">
+            <div class="p-2 bg-light rounded border mb-3">
+              <strong id="modalTargetStudentName" class="d-block text-dark">Student Name</strong>
+              <small class="text-muted" id="modalTargetStudentReg">Register Number</small>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Date of Meeting <span class="text-danger">*</span></label>
+                <input type="date" id="qiDate" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Status <span class="text-danger">*</span></label>
+                <select id="qiStatus" class="form-select" required>
+                  <option value="Open">Open</option>
+                  <option value="In Progress" selected>In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Primary Reason / Focus <span class="text-danger">*</span></label>
+                <input type="text" id="qiReason" class="form-control" placeholder="e.g. Attendance counseling & arrear remedial coaching" required>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Mentor Counseling Notes & Observations <span class="text-danger">*</span></label>
+                <textarea id="qiNote" class="form-control" rows="3" placeholder="Discussed study schedule, diagnosed concept difficulties in Engineering Mathematics, assigned peer tutor..." required></textarea>
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label fw-semibold small">Action Taken / Remedial Plan</label>
+                <input type="text" id="qiAction" class="form-control" placeholder="e.g. Enrolled in Saturday remedial coaching classes">
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Next Follow-up Date</label>
+                <input type="date" id="qiFollowUp" class="form-control">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="submitQuickIntervention()">Save Counseling Record</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/mentor-attention.js"></script>
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile | Student Profiling System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app-wrapper">
+    <main id="main-content">
+      <div class="page-container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb mb-1 small">
+                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="students.html">Students</a></li>
+                <li class="breadcrumb-item active" id="breadcrumbName">Profile</li>
+              </ol>
+            </nav>
+            <h3 class="page-title" id="profileHeaderName">Student Profile</h3>
+            <p class="page-subtitle" id="profileHeaderSub">Comprehensive academic, personal, technical, and mentoring records.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-warning d-flex align-items-center gap-2" onclick="openInterventionModal()">
+              <i class="bi bi-journal-plus"></i> Add Mentor Intervention
+            </button>
+            <a href="#" id="btnEditStudentDirect" class="btn btn-outline-primary d-flex align-items-center gap-2">
+              <i class="bi bi-pencil-square"></i> Edit Profile
+            </a>
+          </div>
+        </div>
+
+        <!-- Mentor Attention Banner (Rendered dynamically if flagged) -->
+        <div id="attentionAlertBanner" class="alert alert-warning border-warning d-none mb-4" role="alert">
+          <div class="d-flex align-items-start gap-3">
+            <i class="bi bi-shield-exclamation fs-3 text-warning-emphasis"></i>
+            <div class="flex-grow-1">
+              <h5 class="alert-heading fw-bold mb-1">Mentor Attention Required</h5>
+              <div id="attentionReasonsList" class="small mb-2">
+                <!-- Dynamic reason bullets -->
+              </div>
+              <button class="btn btn-sm btn-warning fw-semibold" onclick="openInterventionModal()">
+                <i class="bi bi-clipboard-plus me-1"></i> Log Mentor Counseling / Follow-up
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Hero Summary Card -->
+        <div class="custom-card mb-4">
+          <div class="card-body">
+            <div class="row g-4 align-items-center">
+              <div class="col-auto">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm"
+                     id="profileAvatar"
+                     style="width: 80px; height: 80px; font-size: 2rem; background: var(--bg); border: 2px solid var(--border); color: var(--fg);">
+                  S
+                </div>
+              </div>
+              <div class="col">
+                <h4 class="fw-bold mb-1" id="profileStudentName">Student Name</h4>
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                  <span class="badge bg-light text-dark border fs-6" id="profileRegNo">Register No</span>
+                  <span class="badge bg-primary" id="profileDept">Department</span>
+                  <span class="badge bg-secondary" id="profileCategory">Category</span>
+                  <span class="badge bg-info-subtle text-info-emphasis" id="profileGoalBadge">Career Goal</span>
+                  <span id="profileTrendBadge"></span>
+                </div>
+                <div class="text-muted small">
+                  <i class="bi bi-envelope me-1"></i> <span id="profileInstEmail">email@college.edu</span>
+                  <span class="mx-2">•</span>
+                  <i class="bi bi-telephone me-1"></i> <span id="profileMobile">9840XXXXXX</span>
+                </div>
+              </div>
+
+              <!-- Profile Completion Card -->
+              <div class="col-lg-4 col-md-12">
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold small text-dark"><i class="bi bi-speedometer2 text-primary me-1"></i> Profile Completion</span>
+                    <span class="fw-bold text-primary" id="profileCompletionText">0%</span>
+                  </div>
+                  <div class="progress mb-2" style="height: 8px;">
+                    <div class="progress-bar bg-success" id="profileCompletionBar" style="width: 0%;"></div>
+                  </div>
+                  <div class="d-flex flex-wrap gap-1 small" id="completionChecklist">
+                    <!-- Dynamic badges -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Tabs -->
+        <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-academic">
+              <i class="bi bi-journal-text me-1"></i> Academic Progress
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-arrears">
+              <i class="bi bi-exclamation-triangle me-1"></i> Arrear History
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-technical">
+              <i class="bi bi-laptop me-1"></i> Technical Portfolio
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-career">
+              <i class="bi bi-compass me-1"></i> Career & Skill Gap
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-personal">
+              <i class="bi bi-person me-1"></i> Personal & Family
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-interventions">
+              <i class="bi bi-chat-left-dots me-1"></i> Mentor Interventions
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="profileTabsContent">
+
+          <!-- 1. ACADEMIC TAB -->
+          <div class="tab-pane fade show active" id="tab-academic">
+            <div class="row g-4">
+              <!-- SGPA Progression Chart -->
+              <div class="col-lg-7">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-graph-up text-primary me-2"></i> Semester-wise SGPA Progression</span>
+                    <span id="cardTrendBadge"></span>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="studentSgpaChart" height="150"></canvas>
+                    <div class="alert alert-light border mt-3 mb-0 small text-muted" id="trendDescription">
+                      Evaluating trend...
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Academic Summary Cards -->
+              <div class="col-lg-5">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-bar-chart-line text-success me-2"></i> Academic Summary</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="row g-3 mb-3">
+                      <div class="col-6">
+                        <div class="p-3 bg-light rounded border text-center">
+                          <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem;">Current CGPA</small>
+                          <div class="fs-2 fw-bold text-primary" id="summaryCgpa">0.00</div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-3 bg-light rounded border text-center">
+                          <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem;">Latest Attendance</small>
+                          <div class="fs-2 fw-bold text-success" id="summaryAttendance">0%</div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-3 bg-light rounded border text-center">
+                          <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem;">Semesters Recorded</small>
+                          <div class="fs-2 fw-bold text-dark" id="summarySemCount">0</div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-3 bg-light rounded border text-center">
+                          <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem;">Active Arrears</small>
+                          <div class="fs-2 fw-bold text-danger" id="summaryActiveArrears">0</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Semesters Table -->
+              <div class="col-12">
+                <div class="custom-card">
+                  <div class="card-header">
+                    <span><i class="bi bi-table text-primary me-2"></i> Semester-wise Records</span>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table custom-table mb-0">
+                        <thead>
+                          <tr>
+                            <th>Semester</th>
+                            <th>SGPA</th>
+                            <th>CGPA</th>
+                            <th>Attendance</th>
+                            <th>Arrear Status</th>
+                            <th>No. of Arrears</th>
+                            <th>Strong Subjects</th>
+                            <th>Academic Achievements</th>
+                          </tr>
+                        </thead>
+                        <tbody id="semestersTableBody">
+                          <!-- Dynamic rows -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. ARREARS TAB -->
+          <div class="tab-pane fade" id="tab-arrears">
+            <div class="custom-card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-clock-history text-danger me-2"></i> Complete Arrear History</span>
+                <span class="badge bg-light text-dark border" id="arrearCountBadge">0 Arrears</span>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table custom-table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Occurred Sem</th>
+                        <th>Subject Code</th>
+                        <th>Subject Name</th>
+                        <th>Attempts</th>
+                        <th>Current Status</th>
+                        <th>Cleared Sem & Grade</th>
+                        <th>Remedial Required</th>
+                        <th>Mentor Support</th>
+                        <th>Reason for Difficulty</th>
+                      </tr>
+                    </thead>
+                    <tbody id="arrearHistoryTableBody">
+                      <!-- Dynamic rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. TECHNICAL TAB -->
+          <div class="tab-pane fade" id="tab-technical">
+            <div class="row g-4">
+              <!-- Skills & Domain -->
+              <div class="col-lg-6">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-code-slash text-primary me-2"></i> Skills & Proficiency</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <strong class="d-block small text-muted text-uppercase mb-1">Programming Languages</strong>
+                      <div id="techLanguagesBadges" class="d-flex flex-wrap gap-1"></div>
+                    </div>
+                    <div class="mb-3">
+                      <strong class="d-block small text-muted text-uppercase mb-1">Technical Skills</strong>
+                      <div id="techSkillsBadges" class="d-flex flex-wrap gap-1"></div>
+                    </div>
+                    <div class="mb-3">
+                      <strong class="d-block small text-muted text-uppercase mb-1">Preferred Technical Domain</strong>
+                      <span class="badge bg-primary fs-6" id="techPreferredDomain">Web Development</span>
+                    </div>
+                    <div class="row g-2 mt-2">
+                      <div class="col-6">
+                        <div class="p-2 bg-light rounded border text-center">
+                          <small class="text-muted d-block">Communication</small>
+                          <strong id="techCommText" class="text-dark">Intermediate</strong>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-2 bg-light rounded border text-center">
+                          <small class="text-muted d-block">Aptitude</small>
+                          <strong id="techAptText" class="text-dark">Intermediate</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Profile Links -->
+              <div class="col-lg-6">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-link-45deg text-info me-2"></i> Professional Profiles</span>
+                  </div>
+                  <div class="card-body" id="profileLinksContainer">
+                    <!-- Dynamic links -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Projects -->
+              <div class="col-12">
+                <div class="custom-card">
+                  <div class="card-header">
+                    <span><i class="bi bi-kanban text-success me-2"></i> Projects Portfolio</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="row g-3" id="projectsCardGrid">
+                      <!-- Dynamic project cards -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Certifications & Internships -->
+              <div class="col-lg-6">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-award text-warning me-2"></i> Certifications</span>
+                  </div>
+                  <div class="card-body" id="certsListContainer">
+                    <!-- Dynamic certs -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-briefcase text-secondary me-2"></i> Internship Experience</span>
+                  </div>
+                  <div class="card-body" id="internshipsListContainer">
+                    <!-- Dynamic internships -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. CAREER & SKILL GAP TAB -->
+          <div class="tab-pane fade" id="tab-career">
+            <div class="row g-4">
+              <!-- Career Track Card -->
+              <div class="col-lg-5">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-flag-fill text-primary me-2"></i> Career Track: <span id="careerTrackName">Placement</span></span>
+                  </div>
+                  <div class="card-body" id="careerTrackDetailsContainer">
+                    <!-- Dynamic details -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule-Based Career Skill Gap Analysis -->
+              <div class="col-lg-7">
+                <div class="custom-card h-100 border-primary">
+                  <div class="card-header bg-primary-subtle text-primary-emphasis d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-diagram-3-fill me-2"></i> Rule-Based Career Skill Gap Guidance</span>
+                    <span class="badge bg-primary">Curricular Engine</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="alert alert-light border py-2 px-3 small text-muted mb-3" id="skillGapDisclaimer">
+                      Guidance is generated by a rule-based mentoring curriculum for study planning, not as a prediction of employment outcomes.
+                    </div>
+
+                    <div class="mb-3">
+                      <strong class="d-block small text-success text-uppercase mb-1"><i class="bi bi-check-circle-fill me-1"></i> Acquired Skills in Target Domain</strong>
+                      <div id="sgAcquiredSkills" class="d-flex flex-wrap gap-1"></div>
+                    </div>
+
+                    <div class="mb-3">
+                      <strong class="d-block small text-danger text-uppercase mb-1"><i class="bi bi-arrow-up-right-circle me-1"></i> Recommended Skills to Develop</strong>
+                      <div id="sgSkillsToDevelop" class="d-flex flex-wrap gap-1"></div>
+                    </div>
+
+                    <div class="mb-3">
+                      <strong class="d-block small text-dark text-uppercase mb-1"><i class="bi bi-award me-1"></i> Suggested Industry Certifications</strong>
+                      <ul id="sgSuggestedCerts" class="small text-muted mb-0 ps-3"></ul>
+                    </div>
+
+                    <div class="mb-3">
+                      <strong class="d-block small text-dark text-uppercase mb-1"><i class="bi bi-folder-check me-1"></i> Recommended Practical Projects to Build</strong>
+                      <ul id="sgSuggestedProjects" class="small text-muted mb-0 ps-3"></ul>
+                    </div>
+
+                    <div class="mb-0" id="sgSoftSkillsGroup">
+                      <strong class="d-block small text-dark text-uppercase mb-1"><i class="bi bi-chat-square-quote me-1"></i> Soft Skill / Aptitude Guidance</strong>
+                      <ul id="sgSoftSkills" class="small text-muted mb-0 ps-3"></ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Self Evaluation -->
+              <div class="col-12">
+                <div class="custom-card">
+                  <div class="card-header">
+                    <span><i class="bi bi-person-check-fill text-info me-2"></i> Student Self-Evaluation & Aspirations</span>
+                  </div>
+                  <div class="card-body" id="selfEvalContainer">
+                    <!-- Dynamic self-eval -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. PERSONAL & FAMILY TAB (Mentor Protected View) -->
+          <div class="tab-pane fade" id="tab-personal">
+            <div class="row g-4">
+              <!-- Personal Details -->
+              <div class="col-lg-6">
+                <div class="custom-card h-100">
+                  <div class="card-header">
+                    <span><i class="bi bi-person-vcard text-primary me-2"></i> Personal Identification</span>
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-borderless mb-0 small">
+                      <tbody>
+                        <tr><td class="text-muted fw-semibold" style="width: 160px;">Register Number:</td><td class="fw-bold" id="piRegNo">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Full Name:</td><td class="fw-bold" id="piName">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Date of Birth:</td><td id="piDob">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Gender:</td><td id="piGender">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Department & Sec:</td><td id="piDeptSec">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Student Category:</td><td id="piCategory">-</td></tr>
+                        <tr id="piCategoryDetailRow"><td class="text-muted fw-semibold" id="piCategoryDetailLabel">Hostel Name:</td><td id="piCategoryDetailValue">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Residential Address:</td><td id="piAddress">-</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Family Details (Strictly Scoped to Mentors) -->
+              <div class="col-lg-6">
+                <div class="custom-card h-100">
+                  <div class="card-header bg-light">
+                    <span><i class="bi bi-shield-lock-fill text-secondary me-2"></i> Family Details (Authorized Mentors Only)</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="alert alert-secondary py-1 px-2 small mb-3">
+                      <i class="bi bi-eye-slash-fill me-1"></i> Protected: Never shown on public dashboards.
+                    </div>
+                    <table class="table table-borderless mb-0 small">
+                      <tbody>
+                        <tr><td class="text-muted fw-semibold" style="width: 160px;">Father's Name:</td><td id="fiFather">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Father's Occupation:</td><td id="fiFatherOcc">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Father's Income:</td><td><span class="badge bg-light text-dark border" id="fiFatherIncome">-</span></td></tr>
+                        <tr><td class="text-muted fw-semibold">Mother's Name:</td><td id="fiMother">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Mother's Occupation:</td><td id="fiMotherOcc">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Mother's Income:</td><td><span class="badge bg-light text-dark border" id="fiMotherIncome">-</span></td></tr>
+                        <tr><td class="text-muted fw-semibold">Emergency Contact:</td><td class="fw-bold text-danger" id="fiEmergency">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">First Gen Graduate:</td><td id="fiFirstGen">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Scholarship Received:</td><td id="fiScholarship">-</td></tr>
+                        <tr><td class="text-muted fw-semibold">Guidance Requested:</td><td id="fiGuidance">-</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. MENTOR INTERVENTIONS TAB -->
+          <div class="tab-pane fade" id="tab-interventions">
+            <div class="custom-card">
+              <div class="card-header d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-chat-square-dots-fill text-primary me-2"></i> Mentoring & Intervention Log Timeline</span>
+                <button class="btn btn-sm btn-primary" onclick="openInterventionModal()" style="background-color: var(--inverse-bg); color: var(--inverse-fg);">
+                  <i class="bi bi-plus-lg me-1"></i> Add Mentor Intervention
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="timeline" id="interventionsTimeline">
+                  <!-- Dynamic timeline items -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal: Add Mentor Intervention -->
+  <div class="modal fade" id="interventionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white" style="background-color: var(--inverse-bg) !important; color: var(--inverse-fg) !important;">
+          <h5 class="modal-title"><i class="bi bi-journal-plus me-2"></i> Record Mentor Intervention</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="interventionForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Date of Meeting / Intervention <span class="text-danger">*</span></label>
+                <input type="date" id="miDate" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Status <span class="text-danger">*</span></label>
+                <select id="miStatus" class="form-select" required>
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Reason for Intervention <span class="text-danger">*</span></label>
+                <input type="text" id="miReason" class="form-control" placeholder="e.g. Attendance below 75%, 2 pending arrears, placement guidance" required>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Mentor Counseling Note <span class="text-danger">*</span></label>
+                <textarea id="miNote" class="form-control" rows="3" placeholder="Discussed reasons for low attendance, long commute fatigue, and recommended peer tutoring..." required></textarea>
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label fw-semibold small">Action Taken / Referral</label>
+                <input type="text" id="miAction" class="form-control" placeholder="e.g. Referred to hostel warden, assigned student study buddy">
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Follow-up Date</label>
+                <input type="date" id="miFollowUp" class="form-control">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="saveMentorIntervention()">Save Intervention</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/chart-theme.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

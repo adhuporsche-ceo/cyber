@@ -1,8 +1,0 @@
-node_modules/
-.env
-.local-accounts.json
-logs/
-*.log
-.DS_Store
-dist/
-build/

@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+netprobe_assets.db
+reports/*
+!reports/.gitkeep

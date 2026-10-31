@@ -1,0 +1,58 @@
+{
+  "vulnerabilities": [
+    {
+      "cve_id": "CVE-2020-14145",
+      "product": "OpenSSH",
+      "affected_versions": ["8.0", "8.1", "8.2", "8.3"],
+      "severity": "MEDIUM",
+      "cvss_score": 5.9,
+      "summary": "Observable timing discrepancy in OpenSSH client handshake allows key exposure under specific conditions.",
+      "remediation": "Upgrade OpenSSH client/server to version 8.4 or higher."
+    },
+    {
+      "cve_id": "CVE-2021-41773",
+      "product": "Apache HTTP Server",
+      "affected_versions": ["2.4.49", "2.4.50"],
+      "severity": "CRITICAL",
+      "cvss_score": 9.8,
+      "summary": "Path traversal and remote code execution vulnerability in Apache HTTP Server 2.4.49 and 2.4.50.",
+      "remediation": "Update Apache HTTP Server immediately to 2.4.51 or later."
+    },
+    {
+      "cve_id": "CVE-2021-23017",
+      "product": "nginx",
+      "affected_versions": ["0.6.18", "1.20.0"],
+      "severity": "HIGH",
+      "cvss_score": 8.1,
+      "summary": "Off-by-one buffer overflow in NGINX DNS resolver module allows remote denial of service or code execution.",
+      "remediation": "Upgrade NGINX to version 1.20.1, 1.21.0, or newer."
+    },
+    {
+      "cve_id": "CVE-2022-21248",
+      "product": "MySQL",
+      "affected_versions": ["8.0.27", "8.0.26", "5.7.36"],
+      "severity": "HIGH",
+      "cvss_score": 7.5,
+      "summary": "Vulnerability in MySQL Server product component allows high privileged attacker with network access to cause server hang/crash.",
+      "remediation": "Apply Oracle Critical Patch Update for MySQL Server."
+    },
+    {
+      "cve_id": "CVE-2018-15473",
+      "product": "OpenSSH",
+      "affected_versions": ["7.7", "7.6", "7.5", "7.4", "7.3", "7.2"],
+      "severity": "MEDIUM",
+      "cvss_score": 5.3,
+      "summary": "OpenSSH username enumeration vulnerability through malformed authentication requests.",
+      "remediation": "Upgrade OpenSSH to version 7.8 or higher, or restrict SSH port exposure."
+    },
+    {
+      "cve_id": "CVE-2022-0778",
+      "product": "OpenSSL",
+      "affected_versions": ["1.0.2", "1.1.1", "3.0.0", "3.0.1"],
+      "severity": "HIGH",
+      "cvss_score": 7.5,
+      "summary": "Infinite loop in BN_mod_sqrt() parsing invalid EC keys causing denial of service.",
+      "remediation": "Update OpenSSL package to 1.1.1n or 3.0.2."
+    }
+  ]
+}

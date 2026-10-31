@@ -1,0 +1,940 @@
+# NETPROBE
+## Automated Network and Website Vulnerability Assessment Tool
+
+**Project Presentation**
+
+> Discover exposure. Identify technology. Correlate risk. Guide remediation.
+
+**Assessment boundary:** Authorized defensive security testing only.
+
+---
+
+# Slide 1: Title
+
+## NETPROBE
+
+### Automated Network and Website Vulnerability Assessment Tool
+
+NETPROBE is a modular defensive security tool that discovers exposed services and websites, identifies technologies and versions, detects security weaknesses, correlates potential vulnerabilities, calculates risk, and generates evidence-based reports.
+
+**Prepared by:** ____________________  
+**Department:** ____________________  
+**Date:** ____________________
+
+---
+
+# Slide 2: Problem Statement
+
+Organizations often expose network services and websites without having a centralized understanding of their security weaknesses.
+
+Manual security checking of the following is time-consuming and inconsistent:
+
+- Open ports
+- Running services
+- Service banners and versions
+- HTTP security headers
+- HTTPS and TLS configuration
+- Cookie security attributes
+- Publicly exposed administrative or configuration paths
+- Potentially vulnerable software versions
+
+Security teams need a fast, repeatable, and explainable assessment process that converts raw scan data into actionable security findings.
+
+---
+
+# Slide 3: Proposed Solution
+
+NETPROBE automates the security assessment workflow for authorized targets.
+
+It performs:
+
+- Host and port discovery
+- Service and protocol detection
+- Banner collection
+- Product and version fingerprinting
+- Website security analysis
+- TLS certificate checks
+- Security rule evaluation
+- Local vulnerability correlation
+- Risk calculation
+- Baseline and change detection
+- TXT, JSON, CSV, and HTML reporting
+
+NETPROBE is designed to discover and assess systems, not compromise them.
+
+---
+
+# Slide 4: Project Objectives
+
+## Primary Objectives
+
+1. Discover network exposure.
+2. Identify open ports and services.
+3. Detect products and software versions safely.
+4. Analyze website and HTTPS security configuration.
+5. Match detected versions with known vulnerability records.
+6. Clearly distinguish potential vulnerabilities from confirmed exploitation.
+7. Explain the evidence and confidence behind every finding.
+8. Provide practical remediation guidance.
+9. Track security changes through baselines.
+10. Produce machine-readable and human-readable reports.
+
+---
+
+# Slide 5: Core Security Workflow
+
+```text
+TARGET
+  |
+  v
+DISCOVERY
+  |
+  v
+PORT / SERVICE DETECTION
+  |
+  v
+VERSION IDENTIFICATION
+  |
+  v
+SECURITY RULE ANALYSIS
+  |
+  v
+VULNERABILITY CORRELATION
+  |
+  v
+SAFE VERIFICATION
+  |
+  v
+RISK ANALYSIS
+  |
+  v
+FINDING
+  |
+  v
+REMEDIATION
+  |
+  v
+REPORT
+```
+
+The key transformation is:
+
+```text
+Raw Network Data
+       |
+       v
+Security Information
+       |
+       v
+Evidence-Based Finding
+       |
+       v
+Risk and Remediation
+```
+
+---
+
+# Slide 6: Product Differentiator
+
+NETPROBE is more than a port scanner.
+
+```text
+Port 80 OPEN
+```
+
+becomes:
+
+```text
+HTTP Service Detected
+        |
+        v
+Web Technology Identified
+        |
+        v
+Security Headers Analyzed
+        |
+        v
+Configuration Weakness Found
+        |
+        v
+Evidence Collected
+        |
+        v
+Risk Explained
+        |
+        v
+Remediation Recommended
+```
+
+NETPROBE focuses on security exposure analysis and understandable findings.
+
+---
+
+# Slide 7: Operating Modes
+
+## Network Assessment
+
+```powershell
+python main.py network 192.168.1.10 --ports top100
+```
+
+Discovers:
+
+- Reachable hosts
+- Open TCP ports
+- Services and protocols
+- Banners
+- Products and versions
+- Network exposure findings
+
+## Website Assessment
+
+```powershell
+python main.py web https://example.com --format html
+```
+
+Checks:
+
+- HTTP status
+- HTTPS availability
+- HTTP to HTTPS behavior
+- Security headers
+- Cookies
+- TLS certificate and expiry
+- Server disclosure
+- Directory listing indicators
+- Sensitive public paths
+
+## Vulnerability Assessment
+
+```powershell
+python main.py vuln example.com --ports 22,80,443 --format json
+```
+
+## Full Assessment
+
+```powershell
+python main.py assess example.com --ports 80,443 --format json
+```
+
+Combines network discovery with website assessment.
+
+---
+
+# Slide 8: System Architecture
+
+```text
+                         NETPROBE
+                            |
+                           CLI
+                            |
+                    Scan Orchestrator
+                            |
+             +--------------+--------------+
+             |                             |
+             v                             v
+      Network Scanner                 Web Assessor
+             |                             |
+             v                             v
+      Service Detector            HTTP / HTTPS Checks
+             |                             |
+             v                             v
+      Version Fingerprinter        TLS Analyzer
+             |                             |
+             +--------------+--------------+
+                            |
+                            v
+                  Security Rules Engine
+                            |
+                            v
+                 Vulnerability Correlation
+                            |
+                            v
+                      Risk Analyzer
+                            |
+                            v
+                   Reporting and Database
+```
+
+---
+
+# Slide 9: Main Modules
+
+## Scanner
+
+- Host discovery
+- TCP port scanning
+- Timeout and thread controls
+- Open, closed, and filtered port status
+
+## Enumeration
+
+- Banner grabbing
+- Protocol detection
+- Product detection
+- Version fingerprinting
+
+## Web Security Engine
+
+- HTTP response analysis
+- Header checks
+- Cookie flag checks
+- Redirect checks
+- TLS certificate validation
+- Sensitive-path checks
+
+## Security Engine
+
+- Security rules
+- Vulnerability database matching
+- Risk scoring
+- Evidence and remediation output
+
+## Reporting Engine
+
+- Terminal output
+- JSON
+- CSV
+- TXT
+- HTML
+
+---
+
+# Slide 10: Vulnerability Correlation Pipeline
+
+```text
+Target
+  |
+  v
+Open Port
+  |
+  v
+Service
+  |
+  v
+Product
+  |
+  v
+Detected Version
+  |
+  v
+Version Normalization
+  |
+  v
+Affected-Version Matching
+  |
+  v
+Potential CVE
+  |
+  v
+Severity and Confidence
+  |
+  v
+Remediation Guidance
+```
+
+NETPROBE never treats a version match as proof of exploitation.
+
+The result is reported as:
+
+```text
+Status: Potentially Affected
+```
+
+---
+
+# Slide 11: Vulnerability Finding Format
+
+```text
+------------------------------------------------------------
+NPT-VULN-002
+------------------------------------------------------------
+
+Title:
+Potentially Vulnerable Software Version
+
+Target:
+Authorized Target
+
+Service:
+HTTP
+
+Product:
+Apache HTTP Server
+
+Detected Version:
+2.4.49
+
+Potential CVE:
+CVE-2021-41773
+
+Severity:
+CRITICAL
+
+CVSS:
+9.8
+
+Confidence:
+HIGH
+
+State:
+Potentially Affected
+
+Evidence:
+Detected software version matches an affected-version record.
+
+Impact:
+The detected version may contain the referenced security weakness.
+
+Recommendation:
+Upgrade to Apache HTTP Server 2.4.51 or a later vendor-supported release.
+
+Reference:
+CVE record and vendor advisory
+------------------------------------------------------------
+```
+
+---
+
+# Slide 12: Website Security Checks
+
+NETPROBE performs safe, non-destructive website checks.
+
+## HTTP and HTTPS
+
+- HTTP response status
+- Redirect behavior
+- HTTPS availability
+- HSTS presence
+
+## Security Headers
+
+- Content-Security-Policy
+- X-Content-Type-Options
+- X-Frame-Options
+- Referrer-Policy
+
+## Cookies
+
+- Secure flag
+- HttpOnly flag
+- SameSite attribute
+
+## Information Disclosure
+
+- Server header disclosure
+- Directory listing indicators
+- Public configuration paths
+- Administrative endpoints returning HTTP 200
+
+## TLS
+
+- Certificate validation
+- Hostname validation
+- Certificate expiry
+- Negotiated protocol
+- Negotiated cipher
+
+---
+
+# Slide 13: Network Security Checks
+
+NETPROBE identifies risky exposed services and protocols.
+
+Examples:
+
+- Plaintext Telnet exposure
+- Plaintext FTP exposure
+- Plaintext HTTP exposure
+- Public database ports
+- Exposed RDP or VNC services
+- SMB and NetBIOS exposure
+- Service version disclosure
+- Potentially vulnerable software versions
+
+Each detection contains:
+
+```text
+Rule ID
+Target
+Port
+Service
+Severity
+Confidence
+Evidence
+Reason
+Recommendation
+State
+```
+
+---
+
+# Slide 14: Risk Analysis
+
+NETPROBE calculates risk using transparent factors:
+
+```text
+Vulnerability Severity
+        +
+Security Finding Severity
+        +
+Service Exposure
+        +
+Detection Confidence
+        +
+Risk Context
+        |
+        v
+Risk Level and Explanation
+```
+
+Risk levels:
+
+- CRITICAL
+- HIGH
+- MEDIUM
+- LOW
+- INFO
+
+Example explanation:
+
+```text
+HIGH
+
+Why?
+
+- Internet-facing service detected
+- High-severity vulnerability match
+- Strong version evidence
+- Remediation is available
+```
+
+The score is always accompanied by an explanation.
+
+---
+
+# Slide 15: Finding Lifecycle
+
+NETPROBE distinguishes detection from proof.
+
+```text
+DISCOVERED
+    |
+    v
+POTENTIAL
+    |
+    v
+VALIDATING
+    |
+    +--> CONFIRMED
+    |
+    +--> NEEDS REVIEW
+    |
+    v
+REPORTED
+    |
+    v
+REMEDIATION
+    |
+    v
+RE-SCAN
+    |
+    +--> RESOLVED
+    |
+    +--> REOPENED
+```
+
+Current implemented states include:
+
+- Detected
+- Verified Configuration Issue
+- Potentially Affected
+
+---
+
+# Slide 16: Baseline and Change Detection
+
+Create a baseline:
+
+```powershell
+python main.py baseline 192.168.1.10 --ports top100
+```
+
+Review scan history:
+
+```powershell
+python main.py history
+```
+
+NETPROBE can compare current results with a stored baseline to identify:
+
+- New hosts
+- New open ports
+- Closed ports
+- Service changes
+- Version changes
+- New vulnerabilities
+- Vulnerabilities no longer detected
+
+This supports remediation verification and continuous monitoring.
+
+---
+
+# Slide 17: Reporting Formats
+
+## Terminal
+
+Fast interactive results for security operators.
+
+## JSON
+
+Machine-readable output for SIEM, SOAR, dashboards, and automation.
+
+## CSV
+
+Flat finding records for spreadsheets and ticketing workflows.
+
+## TXT
+
+Readable evidence and remediation summary.
+
+## HTML
+
+Formatted report for review and sharing.
+
+Example:
+
+```powershell
+python main.py assess example.com --format all --output assessment.json
+```
+
+Generated report types:
+
+```text
+assessment.txt
+assessment.json
+assessment.csv
+assessment.html
+```
+
+---
+
+# Slide 18: Example JSON Structure
+
+```json
+{
+  "generator": "NETPROBE v1.0",
+  "timestamp": "2026-09-21 20:00:00",
+  "scan_count": 1,
+  "results": [
+    {
+      "ip": "authorized.example",
+      "open_ports_count": 1,
+      "open_ports": [
+        {
+          "port": 443,
+          "service": "HTTPS",
+          "product": "Web Application",
+          "findings": [
+            {
+              "rule_id": "WEB-HSTS-HEADER-MISSING",
+              "state": "Verified Configuration Issue",
+              "severity": "MEDIUM",
+              "confidence": "High",
+              "evidence": "Header absent",
+              "recommendation": "Configure HSTS"
+            }
+          ],
+          "vulnerabilities": []
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+# Slide 19: Safety Boundary
+
+NETPROBE is a defensive assessment tool.
+
+## Allowed Behavior
+
+- TCP connection scanning
+- Safe banner collection
+- HTTP GET and HEAD requests
+- Header and cookie inspection
+- TLS certificate inspection
+- Version correlation
+- Configuration assessment
+- Baseline comparison
+
+## Excluded Behavior
+
+- Credential attacks
+- Password cracking
+- Exploit execution
+- Malware
+- Persistence
+- Data destruction
+- Unauthorized access
+
+Every assessment must be performed only against authorized targets.
+
+---
+
+# Slide 20: Accuracy and False-Positive Control
+
+NETPROBE prioritizes evidence quality over the number of findings.
+
+```text
+Evidence
+   +
+Confidence
+   +
+Correlation
+   =
+Finding Quality
+```
+
+Quality controls:
+
+- Exact or normalized version matching
+- Service-aware rule matching
+- Evidence attached to findings
+- Confidence level attached to detections
+- Potential status for CVE matches
+- No automatic exploit execution
+- Duplicate findings avoided by stable IDs
+
+Principle:
+
+> Never confuse detection with proof.
+
+---
+
+# Slide 21: Demonstration Flow
+
+## Step 1: Website Scan
+
+```powershell
+python main.py web https://example.com --format all
+```
+
+## Step 2: Network Scan
+
+```powershell
+python main.py network 192.168.1.10 --ports 22,80,443
+```
+
+## Step 3: Vulnerability Scan
+
+```powershell
+python main.py vuln example.com --ports 22,80,443 --format json --output report.json
+```
+
+## Step 4: Full Assessment
+
+```powershell
+python main.py assess example.com --ports 80,443 --format html
+```
+
+## Step 5: Baseline
+
+```powershell
+python main.py baseline example.com --ports 80,443
+```
+
+## Step 6: History
+
+```powershell
+python main.py history
+```
+
+---
+
+# Slide 22: Demonstration Result
+
+Example website findings:
+
+```text
+Target: https://example.com
+Service: HTTPS
+
+[LOW]    Server Version Disclosure
+[MEDIUM] HSTS Header Missing
+[MEDIUM] Content-Security-Policy Missing
+[LOW]    X-Content-Type-Options Missing
+[LOW]    Clickjacking Protection Missing
+[LOW]    Referrer-Policy Missing
+```
+
+Example vulnerability correlation:
+
+```text
+NPT-VULN-002
+CVE-2021-41773
+Product: Apache HTTP Server
+Detected Version: 2.4.49
+Status: Potentially Affected
+Confidence: HIGH
+Severity: CRITICAL
+```
+
+---
+
+# Slide 23: Testing and Validation
+
+NETPROBE was validated through:
+
+- Python syntax compilation
+- CLI help validation
+- Website scan against a local HTTP server
+- Website scan against `example.com`
+- HTTP security-header detection
+- TLS certificate inspection
+- Sensitive-path probing with HEAD requests
+- CVE correlation testing
+- Apache version matching test
+- HTTPS versus HTTP rule matching test
+- CSV report generation
+- JSON report generation
+- Baseline creation
+- History retrieval
+
+Validation result:
+
+```text
+Modified modules compiled successfully.
+CLI workflows completed successfully.
+Structured reports generated successfully.
+```
+
+---
+
+# Slide 24: Current Implementation Status
+
+## Implemented
+
+- Network port scanning
+- Host discovery
+- Service detection
+- Banner grabbing
+- Version detection
+- Local vulnerability correlation
+- Website security checks
+- TLS certificate checks
+- Security rules
+- Risk scoring
+- Baseline support
+- Change detection
+- SQLite scan history
+- TXT, JSON, CSV, and HTML reports
+- Command aliases for network, scan, vuln, web, assess, baseline, and history
+
+## Planned Enhancements
+
+- External CVE feed synchronization
+- Vulnerability database caching and refresh
+- Modular plugin check directories
+- Full scan-to-scan diff command
+- Exposure graph visualization
+- Asset inventory dashboard
+- More technology-specific checks
+- Formal test suite and packaging
+
+---
+
+# Slide 25: Future Roadmap
+
+## Phase 1: Foundation
+
+- CLI
+- Target validation
+- Port scanner
+- Service identification
+
+## Phase 2: Intelligence
+
+- Version fingerprinting
+- CVE database integration
+- Advisory and CWE metadata
+- Confidence engine
+
+## Phase 3: Detection
+
+- Modular web checks
+- TLS checks
+- Technology-specific checks
+- Exposure rules
+
+## Phase 4: Security Operations
+
+- Baselines
+- Differential scanning
+- Finding lifecycle management
+- Remediation verification
+
+## Phase 5: Integration
+
+- SIEM export
+- SOAR integration
+- CI/CD scanning
+- Dashboard and API
+
+---
+
+# Slide 26: Expected Benefits
+
+NETPROBE helps security teams:
+
+- Understand what is exposed
+- Identify unknown services
+- Detect weak web configurations
+- Prioritize potential vulnerabilities
+- Reduce manual assessment effort
+- Produce repeatable evidence
+- Track remediation progress
+- Verify security improvements
+- Integrate results with existing workflows
+
+The tool converts technical scan output into security decisions.
+
+---
+
+# Slide 27: Conclusion
+
+NETPROBE is an automated defensive vulnerability assessment tool that:
+
+- Discovers network and website exposure
+- Identifies services, products, and versions
+- Detects configuration weaknesses
+- Correlates software with potential CVEs
+- Collects evidence safely
+- Explains confidence and risk
+- Recommends remediation
+- Supports baseline comparison and reporting
+
+Final product principle:
+
+> Find security weaknesses accurately, prove them where safely possible, explain their risk, and guide remediation.
+
+---
+
+# Slide 28: Thank You
+
+## NETPROBE
+
+### Automated Network and Website Vulnerability Assessment Tool
+
+**Questions?**
+
+```text
+What is exposed?
+What did NETPROBE detect?
+What evidence supports the finding?
+How confident is the result?
+What should be fixed?
+Did the remediation work?
+```
